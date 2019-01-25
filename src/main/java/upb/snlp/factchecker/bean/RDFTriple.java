@@ -1,7 +1,5 @@
 package upb.snlp.factchecker.bean;
 
-import org.apache.xpath.operations.String;
-
 public class RDFTriple {
 
     private String subject;
