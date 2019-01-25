@@ -1,0 +1,49 @@
+package upb.snlp.factchecker.bean;
+
+public class Fact {
+
+    private long factId;
+    private String statement;
+    private float truthfulnessValue;
+
+    private boolean truthfulness;
+
+    public long getFactId() {
+        return factId;
+    }
+
+    public void setFactId(long factId) {
+        this.factId = factId;
+    }
+
+    public String getStatement() {
+        return statement;
+    }
+
+    public void setStatement(String statement) {
+        this.statement = statement;
+    }
+
+    public boolean isTruthfulness() {
+        return truthfulness;
+    }
+
+    public void setTruthfulness(boolean truthfulness) {
+        this.truthfulness = truthfulness;
+    }
+
+    public float getTruthfulnessValue() {
+        return truthfulnessValue;
+    }
+
+    public void setTruthfulnessValue(float truthfulnessValue) {
+        this.truthfulnessValue = truthfulnessValue;
+        if(truthfulnessValue == 1)
+            this.truthfulness = true;
+    }
+
+    @Override
+    public String toString() {
+        return statement;
+    }
+}
