@@ -1,9 +1,16 @@
 package upb.snlp.factchecker.bean;
 
+import com.opencsv.bean.CsvBindByName;
+
 public class Fact {
 
+    @CsvBindByName(column = "FactID", required = true)
     private long factId;
+
+    @CsvBindByName(column = "Fact_Statement", required = true)
     private String statement;
+
+    @CsvBindByName(column = "True/False", required = true)
     private float truthfulnessValue;
 
     private boolean truthfulness;
