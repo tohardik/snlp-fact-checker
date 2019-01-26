@@ -37,4 +37,13 @@ public class RDFTriple {
     public void setPredicate(String predicate) {
         this.predicate = predicate;
     }
+
+    @Override
+    public String toString() {
+        return "RDFTriple{" +
+                "subject='" + subject + '\'' +
+                ", object='" + object + '\'' +
+                ", predicate='" + predicate + '\'' +
+                '}';
+    }
 }

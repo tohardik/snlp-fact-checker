@@ -10,7 +10,7 @@ public class Fact {
     @CsvBindByName(column = "Fact_Statement", required = true)
     private String statement;
 
-    @CsvBindByName(column = "True/False", required = true)
+    @CsvBindByName(column = "True/False")
     private float truthfulnessValue;
 
     private boolean truthfulness;
