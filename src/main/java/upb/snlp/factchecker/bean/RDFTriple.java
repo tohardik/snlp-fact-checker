@@ -6,6 +6,14 @@ public class RDFTriple {
     private String object;
     private String predicate;
 
+    public RDFTriple(String subject, String object, String predicate){
+        this.subject = subject;
+        this.object = object;
+        this.predicate = predicate;
+    }
+
+    public RDFTriple(){}
+
     public String getSubject() {
         return subject;
     }
