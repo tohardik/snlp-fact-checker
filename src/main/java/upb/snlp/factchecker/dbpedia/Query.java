@@ -5,112 +5,107 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import upb.snlp.factchecker.bean.RDFTriple;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Query {
 
     private static JSONObject queryDBPedia(String queryString) throws UnsupportedEncodingException, UnirestException {
 
         HttpResponse<JsonNode> jsonResponse =
-                Unirest.get(String.format(Constants.DBPEDIA_QUERY_BASE_URL, queryString))
+                Unirest.get(String.format(DBPediaConstants.DBPEDIA_QUERY_BASE_URL, queryString))
                         .header("accept", "application/json")
                         .asJson();
 
+        //TODO handle redirections
+
         return jsonResponse.getBody().getObject()
-                .getJSONObject(String.format(Constants.DBPEDIA_RESPONSE_ROOT_KEY, queryString));
+                .getJSONObject(String.format(DBPediaConstants.DBPEDIA_RESPONSE_ROOT_KEY, queryString));
     }
 
-    public static List<String> queryBirthPlaceData(RDFTriple triple) {
-        String queryString = triple.getSubject();
-        return queryMultiValueDataFor(queryString, Constants.BIRTH_PLACE_KEY);
+    public static Collection<String> queryAwardsData(String queryString) {
+        Set<String> awards = queryMultiValueDataFor(queryString, DBPediaConstants.AWARD_KEY);
+        awards.addAll(queryMultiValueDataFor(queryString, DBPediaConstants.ABSTRACT_KEY));
+
+        return awards;
     }
 
-    public static List<String> querySpouseData(RDFTriple triple) {
-        String queryString = triple.getSubject();
-        return queryMultiValueDataFor(queryString, Constants.SPOUSE_KEY);
+    public static Collection<String> querySportsTeamData(String queryString) {
+        //http://dbpedia.org/ontology/termPeriod may be interesting for historic teams
+        return queryMultiValueDataFor(queryString, DBPediaConstants.TEAM_KEY);
     }
 
-    public static List<String> queryAwardsData(RDFTriple triple) {
-        String queryString = triple.getSubject();
-        return queryMultiValueDataFor(queryString, Constants.AWARD_KEY);
+    public static Collection<String> querySubsidiaryData(String subjectQueryString) {
+
+        Set<String> subsidiaries = queryMultiValueDataFor(subjectQueryString, DBPediaConstants.SUBSIDIARY_KEY);
+//        subsidiaries.addAll(queryMultiValueDataFor(objectQueryString, DBPediaConstants.OWNING_COMPANY_KEY));
+
+        // handle uri for List of companies as response
+
+        return subsidiaries;
+
     }
 
-    public static List<String> queryDeathPlaceData(RDFTriple triple) {
-        String queryString = triple.getSubject();
-        return queryMultiValueDataFor(queryString, Constants.DEATH_PLACE_KEY);
-    }
-
-    public static List<String> queryLeaderData(RDFTriple triple) {
-        String queryString = triple.getSubject();
-        return queryMultiValueDataFor(queryString, Constants.LEADER_KEY);
-    }
-
-    public static List<String> querySportsTeamData(RDFTriple triple) {
-        String queryString = triple.getSubject();
-        return queryMultiValueDataFor(queryString, Constants.TEAM_KEY);
-    }
-
-    public static List<String> queryFoundationPlaceData(RDFTriple triple) {
-        String queryString = triple.getSubject();
-        return queryMultiValueDataFor(queryString, Constants.FOUND_KEY);
-    }
-
-    public static List<String> queryActorsData(RDFTriple triple) {
-        String queryString = triple.getSubject();
-        return queryMultiValueDataFor(queryString, Constants.STARS_KEY);
-    }
-
-    public static List<String> queryBookAuthorData(RDFTriple triple) {
-        String queryString = triple.getSubject();
-        return queryMultiValueDataFor(queryString, Constants.AUTHOR_KEY);
-    }
-
-    public static List<String> querySubsidiaryData(RDFTriple triple) {
-        String queryString = triple.getSubject();
-        return queryMultiValueDataFor(queryString, Constants.SUBSIDIARY_KEY);
-
-        // some times a company has a parent company field in the json, search needs to be on object in that case, cardinality unknown
-    }
-
-    private static List<String> queryMultiValueDataFor(String queryString, String key) {
-        List<String> values = new ArrayList<>();
+    public static Set<String> queryMultiValueDataFor(String queryString, String key) {
+        Set<String> values = new HashSet<>();
 
         try {
-            JSONObject subjectData = queryDBPedia(queryString);
+            JSONObject subjectData = getSubjectData(queryString);
             JSONArray entities = subjectData.getJSONArray(key);
             int arraySize = entities.length();
 
             for (int i = 0; i < arraySize; i++) {
-                values.add(extractValue(entities.getJSONObject(i)));
+                String extractedValue = extractValue(entities.getJSONObject(i));
+                if(extractedValue != null)
+                    values.add(extractedValue);
             }
 
-        } catch (UnsupportedEncodingException | UnirestException e) {
+        } catch (UnsupportedEncodingException | UnirestException | JSONException e) {
             e.printStackTrace();
         }
 
         return values;
     }
 
+    private static JSONObject getSubjectData(String queryString) throws UnsupportedEncodingException, UnirestException {
+        return queryDBPedia(queryString);
+    }
+
     // Jaccard similarity can be applied on this return value to match with likeliness
     private static String extractValue(JSONObject typeValuePair) throws UnsupportedEncodingException {
         String valueType = typeValuePair.getString("type");
+        String lang = typeValuePair.getString("lang");
+        String value = null;
+
         if (valueType.equalsIgnoreCase("uri")) {
-            String value = typeValuePair.getString("value");
+            value = typeValuePair.getString("value");
             int NEStartIndex = value.lastIndexOf("/") + 1;
-            String namedEntity = URLDecoder.decode(value.substring(NEStartIndex).replace("_", " "), "UTF-8");
-            return namedEntity.trim();
-        } else {
-            System.out.println("====================== UNKNOWN TYPE FOUND: " + valueType);
+            value = URLDecoder.decode(value.substring(NEStartIndex).replace("_", " "), "UTF-8").trim();
+        }
+        else if (valueType.equalsIgnoreCase("literal")) {
+            if(lang == null) {
+                value = typeValuePair.getString("value");
+            }
+            else
+            {
+                if(lang.equalsIgnoreCase("en"))
+                {
+                    value = typeValuePair.getString("value");
+                }
+            }
         }
 
-        return null;
+        if(value == null){
+            System.out.println("====================== UNKNOWN TYPE FOUND: " + valueType + "," + lang);
+        }
+
+        return value;
     }
 
     private static String encodeForURL(String string) throws UnsupportedEncodingException {
