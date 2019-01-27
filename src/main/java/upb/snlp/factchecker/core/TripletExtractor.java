@@ -92,10 +92,10 @@ public class TripletExtractor {
             return createTriplets(originalFact, "is", Constants.PREDICATE_SUBSIDIARY, true);
         } else if(fact.contains(" stars")){
             return createTriplets(originalFact, "stars", Constants.PREDICATE_STARS, false);
-        } else if(fact.startsWith("stars")){
+        } else if(fact.startsWith("stars") || fact.startsWith("Stars")){
             String subject = originalFact.substring("Stars ".length(), originalFact.indexOf(" has been"));
             String object = originalFact.substring(originalFact.lastIndexOf(' ') + 1);
-            return new RDFTriple(clean(subject), Constants.PREDICATE_STARS, clean(object));
+            return new RDFTriple(clean(subject), clean(object), Constants.PREDICATE_STARS);
         }
         return null;
     }

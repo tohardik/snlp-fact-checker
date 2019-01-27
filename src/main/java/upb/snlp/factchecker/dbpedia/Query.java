@@ -67,7 +67,7 @@ public class Query {
             }
 
         } catch (UnsupportedEncodingException | UnirestException | JSONException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         return values;
@@ -80,7 +80,7 @@ public class Query {
     // Jaccard similarity can be applied on this return value to match with likeliness
     private static String extractValue(JSONObject typeValuePair) throws UnsupportedEncodingException {
         String valueType = typeValuePair.getString("type");
-        String lang = typeValuePair.getString("lang");
+        String lang = typeValuePair.has("lang") ? typeValuePair.getString("lang") : null;
         String value = null;
 
         if (valueType.equalsIgnoreCase("uri")) {
@@ -101,7 +101,7 @@ public class Query {
             }
         }
 
-        if(value == null){
+        if(value == null && !typeValuePair.has("lang")){
             System.out.println("====================== UNKNOWN TYPE FOUND: " + valueType + "," + lang);
         }
 
