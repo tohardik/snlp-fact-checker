@@ -8,15 +8,16 @@ public class DBPediaConstants {
     // keys
     public static final String BIRTH_PLACE_KEY = "http://dbpedia.org/ontology/birthPlace";  //A
     public static final String SPOUSE_KEY = "http://dbpedia.org/ontology/spouse"; //A
-    public static final String AWARD_KEY = "http://dbpedia.org/ontology/award"; //A , send abstract section
+    public static final String AWARD_KEY = "http://dbpedia.org/ontology/award"; //A
+    public static final String ABSTRACT_KEY = "http://dbpedia.org/ontology/abstract"; //A
     public static final String DEATH_PLACE_KEY = "http://dbpedia.org/ontology/deathPlace"; //A
-    public static final String LEADER_KEY = "http://dbpedia.org/ontology/office"; //A, not available for previously held offices
-    public static final String TEAM_KEY = "http://dbpedia.org/ontology/team"; //A //http://dbpedia.org/ontology/termPeriod may be interesting for historic teams
+    public static final String LEADER_KEY = "http://dbpedia.org/ontology/office"; //A
+    public static final String TEAM_KEY = "http://dbpedia.org/ontology/team"; //A
     public static final String FOUND_KEY = "http://dbpedia.org/ontology/foundationPlace"; //A
     public static final String STARS_KEY = "http://dbpedia.org/ontology/starring"; //A
     public static final String AUTHOR_KEY = "http://dbpedia.org/ontology/author"; //A
     public static final String SUBSIDIARY_KEY = "http://dbpedia.org/ontology/subsidiary"; //A
-    public static final String OWNING_COMPANY_KEY = "http://dbpedia.org/ontology/owningCompany"; //A , Subsidiary alternative
+    public static final String OWNING_COMPANY_KEY = "http://dbpedia.org/ontology/owningCompany"; //A
 
 
 

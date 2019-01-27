@@ -11,26 +11,26 @@ public enum Predicate {
     BIRTH_PLACE(Constants.PREDICATE_BIRTH_PLACE, DBPediaConstants.BIRTH_PLACE_KEY),
     SPOUSE(Constants.PREDICATE_SPOUSE, DBPediaConstants.SPOUSE_KEY),
     DEATH_PLACE(Constants.PREDICATE_DEATH_PLACE, DBPediaConstants.DEATH_PLACE_KEY),
-    LEADER(Constants.PREDICATE_OFFICE, DBPediaConstants.LEADER_KEY),
+    LEADER(Constants.PREDICATE_OFFICE, DBPediaConstants.LEADER_KEY), //Previously held offices are not present for some NE
     FOUND(Constants.PREDICATE_FOUNDATION_PLACE, DBPediaConstants.FOUND_KEY),
     STARS(Constants.PREDICATE_STARS, DBPediaConstants.STARS_KEY),
     AUTHOR(Constants.PREDICATE_AUTHOR, DBPediaConstants.AUTHOR_KEY),
     TEAM(Constants.PREDICATE_TEAM, DBPediaConstants.TEAM_KEY) {
         @Override
         public Collection<String> queryDBPediaFor(RDFTriple triple) {
-            return Query.querySportsTeamData(triple);
+            return Query.querySportsTeamData(triple.getSubject());
         }
     },
     AWARD(Constants.PREDICATE_AWARD, DBPediaConstants.AWARD_KEY) {
         @Override
         public Collection<String> queryDBPediaFor(RDFTriple triple) {
-            return Query.queryAwardsData(triple);
+            return Query.queryAwardsData(triple.getSubject());
         }
     },
     SUBSIDIARY(Constants.PREDICATE_SUBSIDIARY, DBPediaConstants.SUBSIDIARY_KEY) {
         @Override
         public Collection<String> queryDBPediaFor(RDFTriple triple) {
-            return Query.querySubsidiaryData(triple);
+            return Query.querySubsidiaryData(triple.getSubject());
 
         }
     };
