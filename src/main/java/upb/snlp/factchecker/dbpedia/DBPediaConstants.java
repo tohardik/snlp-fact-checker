@@ -1,6 +1,6 @@
 package upb.snlp.factchecker.dbpedia;
 
-public class Constants {
+public class DBPediaConstants {
 
     public static final String DBPEDIA_QUERY_BASE_URL = "http://dbpedia.org/data/%s.json";
     public static final String DBPEDIA_RESPONSE_ROOT_KEY = "http://dbpedia.org/resource/%s";

@@ -19,7 +19,7 @@ public class Query {
     private static JSONObject queryDBPedia(String queryString) throws UnsupportedEncodingException, UnirestException {
 
         HttpResponse<JsonNode> jsonResponse =
-                Unirest.get(String.format(Constants.DBPEDIA_QUERY_BASE_URL, encodeForURL(queryString)))
+                Unirest.get(String.format(DBPediaConstants.DBPEDIA_QUERY_BASE_URL, encodeForURL(queryString)))
                         .header("accept", "application/json")
                         .asJson();
 
@@ -27,25 +27,25 @@ public class Query {
 
 
         return jsonResponse.getBody().getObject()
-                .getJSONObject(String.format(Constants.DBPEDIA_RESPONSE_ROOT_KEY, encodeForURL(queryString)));
+                .getJSONObject(String.format(DBPediaConstants.DBPEDIA_RESPONSE_ROOT_KEY, encodeForURL(queryString)));
     }
 
     public static Collection<String> queryAwardsData(RDFTriple triple) {
         String queryString = triple.getSubject();
-        return queryMultiValueDataFor(queryString, Constants.AWARD_KEY);
+        return queryMultiValueDataFor(queryString, DBPediaConstants.AWARD_KEY);
     }
 
     public static Collection<String> querySportsTeamData(RDFTriple triple) {
         String queryString = triple.getSubject();
-        return queryMultiValueDataFor(queryString, Constants.TEAM_KEY);
+        return queryMultiValueDataFor(queryString, DBPediaConstants.TEAM_KEY);
     }
 
     public static Collection<String> querySubsidiaryData(RDFTriple triple) {
         String subjectQueryString = triple.getSubject();
         String objectQueryString = triple.getObject();
 
-        Set<String> subsidiaries = queryMultiValueDataFor(subjectQueryString, Constants.SUBSIDIARY_KEY);
-        subsidiaries.addAll(queryMultiValueDataFor(objectQueryString, Constants.OWNING_COMPANY_KEY));
+        Set<String> subsidiaries = queryMultiValueDataFor(subjectQueryString, DBPediaConstants.SUBSIDIARY_KEY);
+        subsidiaries.addAll(queryMultiValueDataFor(objectQueryString, DBPediaConstants.OWNING_COMPANY_KEY));
 
         // handle uri for List of companies as response
 
