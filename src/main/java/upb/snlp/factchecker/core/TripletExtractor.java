@@ -95,7 +95,7 @@ public class TripletExtractor {
         } else if(fact.startsWith("stars")){
             String subject = originalFact.substring("Stars ".length(), originalFact.indexOf(" has been"));
             String object = originalFact.substring(originalFact.lastIndexOf(' ') + 1);
-            return new RDFTriple(normalize(subject), Constants.PREDICATE_STARS, normalize(object));
+            return new RDFTriple(clean(subject), Constants.PREDICATE_STARS, clean(object));
         }
         return null;
     }
@@ -112,13 +112,16 @@ public class TripletExtractor {
      * Subject and object are swapped if inverted flag is true.
      */
     private static RDFTriple createTriplets(String fact, String key, String predicate, boolean inverted){
+        if(inverted){
+            key = " " + key + " ";
+        }
         int keyIndex = fact.indexOf(key);
         String subject = fact.substring(0, keyIndex);
         String object = fact.substring(keyIndex + key.length());
         if (!inverted)
-            return new RDFTriple(normalize(subject), normalize(object), predicate);
+            return new RDFTriple(clean(subject), clean(object), predicate);
         else
-            return new RDFTriple(normalize(object), normalize(subject), predicate);
+            return new RDFTriple(clean(object), clean(subject), predicate);
 
     }
 
@@ -129,9 +132,9 @@ public class TripletExtractor {
      *
      * This function takes a set of words and normalizes it by removing apostrophe and dots from them.
      */
-    private static String normalize(String partOfSpeech) {
+    private static String clean(String partOfSpeech) {
         partOfSpeech = partOfSpeech.contains("'") ? partOfSpeech.substring(0, partOfSpeech.lastIndexOf("'")) : partOfSpeech;
-        return partOfSpeech.trim();
+        return partOfSpeech.replaceAll("[.]$","").trim();
     }
 
 }

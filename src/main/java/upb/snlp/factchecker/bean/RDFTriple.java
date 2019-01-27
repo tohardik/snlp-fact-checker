@@ -15,7 +15,7 @@ public class RDFTriple {
     public RDFTriple(){}
 
     public String getSubject() {
-        return subject;
+        return subject.replaceAll("[\\s]","_").trim();
     }
 
     public void setSubject(String subject) {

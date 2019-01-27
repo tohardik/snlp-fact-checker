@@ -19,12 +19,12 @@ public class Query {
     private static JSONObject queryDBPedia(String queryString) throws UnsupportedEncodingException, UnirestException {
 
         HttpResponse<JsonNode> jsonResponse =
-                Unirest.get(String.format(Constants.DBPEDIA_QUERY_BASE_URL, encodeForURL(queryString)))
+                Unirest.get(String.format(Constants.DBPEDIA_QUERY_BASE_URL, queryString))
                         .header("accept", "application/json")
                         .asJson();
 
         return jsonResponse.getBody().getObject()
-                .getJSONObject(String.format(Constants.DBPEDIA_RESPONSE_ROOT_KEY, encodeForURL(queryString)));
+                .getJSONObject(String.format(Constants.DBPEDIA_RESPONSE_ROOT_KEY, queryString));
     }
 
     public static List<String> queryBirthPlaceData(RDFTriple triple) {

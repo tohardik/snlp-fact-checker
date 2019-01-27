@@ -11,5 +11,4 @@ public class Constants {
     public static final String PREDICATE_STARS = "stars";
     public static final String PREDICATE_AUTHOR = "author";
     public static final String PREDICATE_SUBSIDIARY = "subsidiary";
-    public static final String PREDICATE_UNKNOWN = "unknown";
 }
