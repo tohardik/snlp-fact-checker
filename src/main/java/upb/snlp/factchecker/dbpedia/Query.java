@@ -5,14 +5,14 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import upb.snlp.factchecker.bean.RDFTriple;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Query {
 
@@ -23,64 +23,38 @@ public class Query {
                         .header("accept", "application/json")
                         .asJson();
 
+        // handle redirections
+
+
         return jsonResponse.getBody().getObject()
                 .getJSONObject(String.format(Constants.DBPEDIA_RESPONSE_ROOT_KEY, encodeForURL(queryString)));
     }
 
-    public static List<String> queryBirthPlaceData(RDFTriple triple) {
-        String queryString = triple.getSubject();
-        return queryMultiValueDataFor(queryString, Constants.BIRTH_PLACE_KEY);
-    }
-
-    public static List<String> querySpouseData(RDFTriple triple) {
-        String queryString = triple.getSubject();
-        return queryMultiValueDataFor(queryString, Constants.SPOUSE_KEY);
-    }
-
-    public static List<String> queryAwardsData(RDFTriple triple) {
+    public static Collection<String> queryAwardsData(RDFTriple triple) {
         String queryString = triple.getSubject();
         return queryMultiValueDataFor(queryString, Constants.AWARD_KEY);
     }
 
-    public static List<String> queryDeathPlaceData(RDFTriple triple) {
-        String queryString = triple.getSubject();
-        return queryMultiValueDataFor(queryString, Constants.DEATH_PLACE_KEY);
-    }
-
-    public static List<String> queryLeaderData(RDFTriple triple) {
-        String queryString = triple.getSubject();
-        return queryMultiValueDataFor(queryString, Constants.LEADER_KEY);
-    }
-
-    public static List<String> querySportsTeamData(RDFTriple triple) {
+    public static Collection<String> querySportsTeamData(RDFTriple triple) {
         String queryString = triple.getSubject();
         return queryMultiValueDataFor(queryString, Constants.TEAM_KEY);
     }
 
-    public static List<String> queryFoundationPlaceData(RDFTriple triple) {
-        String queryString = triple.getSubject();
-        return queryMultiValueDataFor(queryString, Constants.FOUND_KEY);
+    public static Collection<String> querySubsidiaryData(RDFTriple triple) {
+        String subjectQueryString = triple.getSubject();
+        String objectQueryString = triple.getObject();
+
+        Set<String> subsidiaries = queryMultiValueDataFor(subjectQueryString, Constants.SUBSIDIARY_KEY);
+        subsidiaries.addAll(queryMultiValueDataFor(objectQueryString, Constants.OWNING_COMPANY_KEY));
+
+        // handle uri for List of companies as response
+
+        return subsidiaries;
+
     }
 
-    public static List<String> queryActorsData(RDFTriple triple) {
-        String queryString = triple.getSubject();
-        return queryMultiValueDataFor(queryString, Constants.STARS_KEY);
-    }
-
-    public static List<String> queryBookAuthorData(RDFTriple triple) {
-        String queryString = triple.getSubject();
-        return queryMultiValueDataFor(queryString, Constants.AUTHOR_KEY);
-    }
-
-    public static List<String> querySubsidiaryData(RDFTriple triple) {
-        String queryString = triple.getSubject();
-        return queryMultiValueDataFor(queryString, Constants.SUBSIDIARY_KEY);
-
-        // some times a company has a parent company field in the json, search needs to be on object in that case, cardinality unknown
-    }
-
-    private static List<String> queryMultiValueDataFor(String queryString, String key) {
-        List<String> values = new ArrayList<>();
+    public static Set<String> queryMultiValueDataFor(String queryString, String key) {
+        Set<String> values = new HashSet<>();
 
         try {
             JSONObject subjectData = queryDBPedia(queryString);
@@ -91,7 +65,7 @@ public class Query {
                 values.add(extractValue(entities.getJSONObject(i)));
             }
 
-        } catch (UnsupportedEncodingException | UnirestException e) {
+        } catch (UnsupportedEncodingException | UnirestException | JSONException e) {
             e.printStackTrace();
         }
 

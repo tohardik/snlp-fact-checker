@@ -8,9 +8,10 @@ import upb.snlp.factchecker.util.TSVReader;
 import java.util.List;
 
 public class App {
+
     public static void main(String[] args) {
         List<Fact> inputs = TSVReader.getFactsFromFile("src/main/resources/train.tsv");
-        for(Fact i : inputs) {
+        for (Fact i : inputs) {
             RDFTriple triplet;
             try {
                 triplet = TripletExtractor.extractRDFTriplets(i.toString());
