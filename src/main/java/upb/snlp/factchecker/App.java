@@ -52,7 +52,6 @@ public class App {
             }
             String line = FACT_URI + i.getFactId() + "> " + PROP_URI + " \"" + i.getTruthfulnessValue() + "\"^^" + TYPE + " .\n";
             fw.write(line);
-            System.out.println(inputs.indexOf(i)+1);
         }
         fw.close();
 
