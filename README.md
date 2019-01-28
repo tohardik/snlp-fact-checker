@@ -16,7 +16,7 @@
 
 ### Description of the approach
 
-The system reads the input file and creates a list of fact objects with factid and fact as its attributes. Then it performs POS taggin for all the facts and extracts Predicate, Object and Subject. Information related to the subject of each fact is then fetched from DBPedia using http call. Structered data is them processed to extract the information particular to the given predicate of the fact. Then we search for the presence of the object in the information extracted. Based on the similarity of the information fetched and the value given in the fact the system assigns a vale between -1.0 to +1.0 to the fact and writes the resuts into the result.ttl file.
+The system reads the input file and creates a list of fact objects with factid and fact as its attributes. Then, for each fact, RDF Triplets are extracted with Predicate, Object and Subject. Information related to the subject of each fact is then fetched from DBPedia REST API. The response from DBPedia REST API is processed to find the relevant data particular to the predicate type. Based on the similarity of the information fetched from DBPedia and the value given in the fact, the system assigns a value between -1.0 to +1.0 to the fact and writes the resuts into the result.ttl file.
 
 #### Example:
 
