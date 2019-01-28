@@ -67,3 +67,9 @@ The system parses the JSON received as the response and extracts the list of val
 ```
 
 ### Steps to build and run the application.
+The project uses Maven to manage dependencies.
+1. Check out the project / Download the source code.
+2. Import the project as a Maven Project in your preferred IDE(Or download IntelliJ: https://www.jetbrains.com/idea/download/#section=windows).
+3. Build the project.
+4. Execute App.main(). This takes about 2 minutes to process all the facts inside the test.tsv file.
+5. A file named result.ttl is generated under the directory src/main/resources. 
