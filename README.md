@@ -74,6 +74,7 @@ The project uses Maven to manage dependencies.
 4. Execute App.main(). This takes about 2 minutes to process all the facts inside the test.tsv file.
 5. A file named result.ttl is generated under the directory src/main/resources. 
 
+
 ### List of facts which are wrongly categorized by the system
 ### False Positive
 Cristiano Ronaldo's current team is Real Madrid.
