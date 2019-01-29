@@ -77,15 +77,15 @@ The project uses Maven to manage dependencies.
 
 ### List of facts which are wrongly categorized by the system
 ### False Positive
-Cristiano Ronaldo's current team is Real Madrid.
-Narendra Modi's role is Chief Minister of Gujarat.
-Michael Keaton's award is Academy Award for Best Actor.
-Liverpool F.C. is Luis Suárez's current squad.
-Golden Globe is Liam Neeson's honour.
+1. Cristiano Ronaldo's current team is Real Madrid.
+2. Narendra Modi's role is Chief Minister of Gujarat.
+3. Michael Keaton's award is Academy Award for Best Actor.
+4. Liverpool F.C. is Luis Suárez's current squad.
+5. Golden Globe is Liam Neeson's honour.
 
 ### False Negative
-Los Angeles Lakers is LeBron James' squad.
-DataFox is Oracle Corporation's subsidiary.
-Interstellar (film) stars Casey Affleck.
-Barack Obama's award is Profile in Courage Award.
-Virat Kohli's birth place is Delhi, India.
+1. Los Angeles Lakers is LeBron James' squad.
+2. DataFox is Oracle Corporation's subsidiary.
+3. Interstellar (film) stars Casey Affleck.
+4. Barack Obama's award is Profile in Courage Award.
+5. Virat Kohli's birth place is Delhi, India.
