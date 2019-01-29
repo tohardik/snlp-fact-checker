@@ -73,3 +73,18 @@ The project uses Maven to manage dependencies.
 3. Build the project.
 4. Execute App.main(). This takes about 2 minutes to process all the facts inside the test.tsv file.
 5. A file named result.ttl is generated under the directory src/main/resources. 
+
+### List of facts which are wrongly categorized by the system
+### False Positive
+Cristiano Ronaldo's current team is Real Madrid.
+Narendra Modi's role is Chief Minister of Gujarat.
+Michael Keaton's award is Academy Award for Best Actor.
+Liverpool F.C. is Luis Suárez's current squad.
+Golden Globe is Liam Neeson's honour.
+
+### False Negative
+Los Angeles Lakers is LeBron James' squad.
+DataFox is Oracle Corporation's subsidiary.
+Interstellar (film) stars Casey Affleck.
+Barack Obama's award is Profile in Courage Award.
+Virat Kohli's birth place is Delhi, India.
